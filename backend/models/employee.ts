@@ -2,31 +2,40 @@ import mongoose from "mongoose";
 
 const employeeSchema = new mongoose.Schema({
     employeeId : {
-        type : Number
+        type : String,
+        required : true
     },
     name :{
-        type : String
+        type : String,
+        required : true
     },
     email : {
-        type : String
+        type : String,
+        required : true
     },
     designation : {
-        type : String
+        type : String,
+        required : true
     },
     baseSalary:{
-        type: Number
+        type: Number,
+        required : true
     },
     hra : {
-        type : Number
+        type : Number,
+        required : true
     },
     allowences : {
-        type : Number
+        type : Number,
+        required : true
     },
     deduction : {
-        type : Number
+        type : Number,
+        required : true
     },
     months : {
-        type : Number
+        type : Number,
+        required : true
     }
 }, {timestamps : true});
 
