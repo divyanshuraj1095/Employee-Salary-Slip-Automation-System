@@ -6,9 +6,9 @@ import uploadRouter from "./route/uploadRouter";
 const app = express();
 dotenv.config();
 
-app.use("/", (req, res)=>{
-    res.send("Payroll backend is running")
-});
+// app.use("/", (req, res)=>{
+//     res.send("Payroll backend is running")
+// });
 app.use("/", uploadRouter);
 
 connectDB()

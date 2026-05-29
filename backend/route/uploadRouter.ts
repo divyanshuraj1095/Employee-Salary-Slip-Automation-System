@@ -1,5 +1,7 @@
 import express from "express"
 import upload from "../middlewares/multer.middleware";
+import parseExcel from "../utils/parseExcel";
+
 const uploadRouter = express.Router();
 
 uploadRouter.post("/upload", upload.single("file"),async(req, res)=>{
@@ -7,9 +9,10 @@ uploadRouter.post("/upload", upload.single("file"),async(req, res)=>{
         if(!req.file){
             throw new Error("Please upload a file");
         }
+        const data = parseExcel(req.file.path);
         res.json({
-            message : "File Uploaded Successfully!!",
-            file : req.file
+            message : "File Uploaded and Parsed Successfully!!",
+            data : data
         })
     }
     catch(err:any){
@@ -17,6 +20,6 @@ uploadRouter.post("/upload", upload.single("file"),async(req, res)=>{
             message : "Error: "+err.message,
         })
     }
-})
+});
 
-export default uploadRouter
+export default uploadRouter;
