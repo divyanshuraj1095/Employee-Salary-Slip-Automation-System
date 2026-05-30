@@ -7,7 +7,7 @@ const generateRouter = express.Router();
 generateRouter.post("/generate", async(req, res)=>{
     try{
         const employees = await Employee.find();
-        if(!employees){
+        if(employees.length == 0){
             throw new Error("Employee not found");
         }
 

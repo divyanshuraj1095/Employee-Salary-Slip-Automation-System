@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const employeeSchema = new mongoose.Schema({
     employeeId : {
         type : String,
-        required : true
+        required : true,
+        unique : true
     },
     name :{
         type : String,
@@ -11,7 +12,8 @@ const employeeSchema = new mongoose.Schema({
     },
     email : {
         type : String,
-        required : true
+        required : true,
+        unique : true
     },
     designation : {
         type : String,
