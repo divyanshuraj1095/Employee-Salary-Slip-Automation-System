@@ -14,7 +14,7 @@ sendEmailRouter.post("/sendEmail", async(req, res)=>{
         }
         for(const employee of employees){
             try{
-               const pdfPath = `pdf/${employee.name}.pdf`;
+               const pdfPath : any = `pdf/${employee.employeeId}-${employee.month}-${employee.year}.pdf`;
                await sendEmail(employee.email, pdfPath);
                successCount++;
 

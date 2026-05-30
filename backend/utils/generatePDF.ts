@@ -3,7 +3,7 @@ import fs, { createWriteStream } from "fs";
 
 const generatePDF = (employee:any)=>{
     const doc = new PDFDocument();
-    const filePath = `pdfs/${employee.name}.pdf`;
+    const filePath = `pdfs/${employee.employeeId}-${employee.month}-${employee.year}.pdf`;
     doc.pipe(fs.createWriteStream(filePath));
     doc.fontSize(20).text("Salary Slip",{
         align : "center"

@@ -35,7 +35,11 @@ const employeeSchema = new mongoose.Schema({
         type : Number,
         required : true
     },
-    months : {
+    month : {
+        type : String,
+        required : true
+    },
+    year : {
         type : Number,
         required : true
     }
