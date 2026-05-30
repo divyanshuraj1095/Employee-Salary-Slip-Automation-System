@@ -13,7 +13,6 @@ const employeeSchema = new mongoose.Schema({
     email : {
         type : String,
         required : true,
-        unique : true
     },
     designation : {
         type : String,
@@ -27,11 +26,11 @@ const employeeSchema = new mongoose.Schema({
         type : Number,
         required : true
     },
-    allowences : {
+    allowances : {
         type : Number,
         required : true
     },
-    deduction : {
+    deductions : {
         type : Number,
         required : true
     },

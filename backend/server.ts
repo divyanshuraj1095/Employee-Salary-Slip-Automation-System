@@ -3,6 +3,7 @@ import connectDB from "./config/db";
 import dotenv from "dotenv";
 import uploadRouter from "./route/uploadRouter";
 import generateRouter from "./route/generateRouter";
+import sendEmailRouter from "./route/sendEmailRouter";
 
 const app = express();
 dotenv.config();
@@ -12,6 +13,7 @@ dotenv.config();
 // });
 app.use("/", uploadRouter);
 app.use("/", generateRouter);
+app.use("/", sendEmailRouter);
 
 connectDB()
 .then(()=>{

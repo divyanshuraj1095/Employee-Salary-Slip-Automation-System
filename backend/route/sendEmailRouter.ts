@@ -1,6 +1,7 @@
 import express from "express";
 import { sendEmail } from "../utils/sendEmail";
 import Employee from "../models/employee";
+import fs from "fs";
 
 const sendEmailRouter = express.Router();
 
@@ -15,6 +16,12 @@ sendEmailRouter.post("/sendEmail", async(req, res)=>{
         for(const employee of employees){
             try{
                const pdfPath : any = `pdf/${employee.employeeId}-${employee.month}-${employee.year}.pdf`;
+               console.log(pdfPath)
+               if (!fs.existsSync(pdfPath)) {
+                console.log(`PDF not found for ${employee.employeeId}`);
+                failureCount++;
+                continue;
+            }
                await sendEmail(employee.email, pdfPath);
                successCount++;
 

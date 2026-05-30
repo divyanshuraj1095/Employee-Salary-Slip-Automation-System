@@ -11,6 +11,7 @@ uploadRouter.post("/upload", upload.single("file"),async(req, res)=>{
             throw new Error("Please upload a file");
         }
         const data = parseExcel(req.file.path);
+        console.log(data);
         await Employee.insertMany(data);
         res.json({
             message   : "File Uploaded and Parsed Successfully!!",
