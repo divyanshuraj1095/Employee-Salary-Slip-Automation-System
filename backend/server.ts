@@ -10,6 +10,7 @@ import uploadRouter from "./route/uploadRouter";
 import generateRouter from "./route/generateRouter";
 import sendEmailRouter from "./route/sendEmailRouter";
 import employeeRouter from "./route/employeeRouter";
+import authRouter from "./route/authRouter";
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(
 app.use(express.json());
 app.use("/pdfs", express.static(path.join(__dirname, "pdfs")));
 
+app.use("/", authRouter);
 app.use("/", uploadRouter);
 app.use("/", generateRouter);
 app.use("/", sendEmailRouter);
