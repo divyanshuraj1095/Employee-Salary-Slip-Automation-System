@@ -200,7 +200,6 @@ Copy from `backend/.env.example`:
 | `EMAIL` | Yes | Admin login email **and** Gmail sender address | `you@gmail.com` |
 | `EMAIL_PASSWORD` | Yes | Admin login password **and** Gmail [App Password](https://support.google.com/accounts/answer/185833) | `xxxx xxxx xxxx xxxx` |
 | `FRONTEND_URL` | Yes | Frontend origin for CORS | `http://localhost:5173` |
-| `NODE_ENV` | No | `development` locally, `production` when deployed | `development` |
 
 **Example `backend/.env`:**
 
