@@ -5,6 +5,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import connectDB from "./config/db";
+import authUser from "./middlewares/auth.middleware";
 
 import uploadRouter from "./route/uploadRouter";
 import generateRouter from "./route/generateRouter";
@@ -26,10 +27,10 @@ app.use(express.json());
 app.use("/pdfs", express.static(path.join(__dirname, "pdfs")));
 
 app.use("/", authRouter);
-app.use("/", uploadRouter);
-app.use("/", generateRouter);
-app.use("/", sendEmailRouter);
-app.use("/", employeeRouter);
+app.use("/", authUser, uploadRouter);
+app.use("/", authUser, generateRouter);
+app.use("/", authUser,  sendEmailRouter);
+app.use("/", authUser, employeeRouter);
 
 connectDB()
 .then(()=>{
