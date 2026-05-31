@@ -1,4 +1,4 @@
-# PayrollPro — Employee Salary Slip Automation System
+# Toyoroll — Employee Salary Slip Automation System
 
 A full-stack HR payroll application for uploading employee data from Excel, generating salary slip PDFs, and emailing them to employees. Built with **React + Vite** (frontend) and **Node.js + Express + MongoDB** (backend).
 
@@ -222,13 +222,13 @@ Copy from `frontend/.env.example`:
 | Variable | Required | Description | Example |
 |----------|----------|-------------|---------|
 | `VITE_API_BASE_URL` | Yes | Backend URL (no trailing slash) | `http://localhost:7777` |
-| `VITE_APP_NAME` | No | Product name in the sidebar | `PayrollPro` |
+| `VITE_APP_NAME` | No | Product name in the sidebar | `Toyoroll` |
 
 **Example `frontend/.env`:**
 
 ```env
 VITE_API_BASE_URL=http://localhost:7777
-VITE_APP_NAME=PayrollPro
+VITE_APP_NAME=Toyoroll
 ```
 
 > Vite only reads variables prefixed with `VITE_`. Restart the dev server after changing `.env`.
@@ -297,7 +297,7 @@ Sample files are included in `backend/uploads/` for reference.
 ### Backend (Railway, Render, VPS, etc.)
 
 1. Set all variables from `backend/.env.example`
-2. Set `FRONTEND_URL` to your deployed frontend URL (e.g. `https://payrollpro.vercel.app`)
+2. Set `FRONTEND_URL` to your deployed frontend URL (e.g. `https://toyoroll.vercel.app`)
 3. Set `NODE_ENV=production`
 4. Ensure MongoDB Atlas (or your DB) is reachable
 5. Start command: `npm run dev` (or use `ts-node` / compile to JS for production)

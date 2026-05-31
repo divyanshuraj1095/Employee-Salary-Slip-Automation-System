@@ -3,5 +3,5 @@ export const env = {
     /\/$/,
     '',
   ) || 'http://localhost:7777',
-  appName: (import.meta.env.VITE_APP_NAME as string | undefined) || 'PayrollPro',
+  appName: (import.meta.env.VITE_APP_NAME as string | undefined) || 'Toyoroll',
 }

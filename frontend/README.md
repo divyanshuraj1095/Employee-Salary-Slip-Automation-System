@@ -1,4 +1,4 @@
-# PayrollPro — Frontend
+# Toyoroll — Frontend
 
 React dashboard for the Employee Salary Slip Automation System.
 
@@ -21,7 +21,7 @@ App runs at **http://localhost:5173**
 | Variable | Description |
 |----------|-------------|
 | `VITE_API_BASE_URL` | Backend URL (default: `http://localhost:7777`) |
-| `VITE_APP_NAME` | Product name in sidebar (default: `PayrollPro`) |
+| `VITE_APP_NAME` | Product name in sidebar (default: `Toyoroll`) |
 
 Login credentials come from the **backend** `.env` (`EMAIL` and `EMAIL_PASSWORD`).
 

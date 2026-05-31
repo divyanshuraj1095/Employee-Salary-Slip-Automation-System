@@ -46,9 +46,6 @@ export function LoginPage() {
           <h1 className="mt-8 text-2xl font-semibold tracking-tight text-gray-900">
             Welcome back
           </h1>
-          <p className="mt-2 text-sm text-[#6B7280]">
-            Sign in with your admin credentials from the backend environment.
-          </p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
             <div>
