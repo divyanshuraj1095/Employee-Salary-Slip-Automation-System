@@ -15,8 +15,8 @@ sendEmailRouter.post("/sendEmail", async(req, res)=>{
         }
         for(const employee of employees){
             try{
-               const pdfPath : any = `pdf/${employee.employeeId}-${employee.month}-${employee.year}.pdf`;
-               console.log(pdfPath)
+               const pdfPath : any = `pdfs/${employee.employeeId}-${employee.month}-${employee.year}.pdf`;
+            //    console.log(pdfPath)
                if (!fs.existsSync(pdfPath)) {
                 console.log(`PDF not found for ${employee.employeeId}`);
                 failureCount++;

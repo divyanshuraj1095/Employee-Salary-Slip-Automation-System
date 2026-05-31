@@ -12,7 +12,7 @@ generateRouter.post("/generate", async(req, res)=>{
         }
 
         for(const employee of employees){
-            generatePDF(employee);
+            await generatePDF(employee);
         }
 
         res.json({

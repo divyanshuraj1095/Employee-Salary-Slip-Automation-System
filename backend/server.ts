@@ -1,12 +1,15 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import connectDB from "./config/db";
-import dotenv from "dotenv";
+
 import uploadRouter from "./route/uploadRouter";
 import generateRouter from "./route/generateRouter";
 import sendEmailRouter from "./route/sendEmailRouter";
 
 const app = express();
-dotenv.config();
+
 
 // app.use("/", (req, res)=>{
 //     res.send("Payroll backend is running")
