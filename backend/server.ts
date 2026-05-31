@@ -6,6 +6,8 @@ import cors from "cors";
 import path from "path";
 import connectDB from "./config/db";
 import authUser from "./middlewares/auth.middleware";
+import cookieParser from "cookie-parser";
+
 
 import uploadRouter from "./route/uploadRouter";
 import generateRouter from "./route/generateRouter";
@@ -14,6 +16,10 @@ import employeeRouter from "./route/employeeRouter";
 import authRouter from "./route/authRouter";
 
 const app = express();
+
+app.use(cookieParser());
+
+
 
 const frontendOrigin = process.env.FRONTEND_URL || "http://localhost:5173";
 
