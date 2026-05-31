@@ -1,10 +1,7 @@
 import express from "express";
-const { validateSinUp } = require('../utils/validate.js');
 const authRouter = express.Router();
 import Admin from "../models/admin.js";
 const validator = require("validator");
-
-
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -36,7 +33,7 @@ authRouter.post("/login", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // true after deployment with HTTPS
+      secure: false,
       sameSite: "lax"
     });
 
