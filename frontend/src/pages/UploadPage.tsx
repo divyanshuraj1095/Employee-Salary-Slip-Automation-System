@@ -3,7 +3,6 @@ import { FiUploadCloud, FiFile } from 'react-icons/fi'
 import { PageHeader } from '../components/PageHeader'
 import { Button } from '../components/Button'
 import { uploadExcel } from '../api/payrollApi'
-import { addActivity } from '../utils/activityLog'
 
 type UploadStatus = 'idle' | 'uploading' | 'success' | 'error'
 
@@ -47,11 +46,6 @@ export function UploadPage() {
       setStatus('success')
       setMessage(
         `${res.message} (${res.employees?.length ?? 0} employees imported)`,
-      )
-      addActivity(
-        'upload',
-        'File Uploaded',
-        `${file.name} — ${res.employees?.length ?? 0} records`,
       )
       setFile(null)
       if (inputRef.current) inputRef.current.value = ''

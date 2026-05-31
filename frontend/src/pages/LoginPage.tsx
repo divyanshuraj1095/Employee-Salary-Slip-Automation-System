@@ -3,15 +3,22 @@ import { Navigate, useNavigate } from 'react-router-dom'
 import { Logo } from '../components/Logo'
 import { Button } from '../components/Button'
 import { useAuth } from '../context/AuthContext'
-import { env } from '../config/env'
 
 export function LoginPage() {
-  const { isAuthenticated, login } = useAuth()
+  const { isAuthenticated, bootstrapping, login } = useAuth()
   const navigate = useNavigate()
-  const [email, setEmail] = useState(env.demoEmail)
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  if (bootstrapping) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-white">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#E5E7EB] border-t-[#DC2626]" />
+      </div>
+    )
+  }
 
   if (isAuthenticated) return <Navigate to="/dashboard" replace />
 
@@ -22,8 +29,10 @@ export function LoginPage() {
     try {
       await login(email, password)
       navigate('/dashboard')
-    } catch {
-      setError('Invalid email or password. Please try again.')
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Invalid email or password.',
+      )
     } finally {
       setLoading(false)
     }
@@ -38,7 +47,7 @@ export function LoginPage() {
             Welcome back
           </h1>
           <p className="mt-2 text-sm text-[#6B7280]">
-            Sign in to manage payroll and salary slips.
+            Sign in with your admin credentials from the backend environment.
           </p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
@@ -87,12 +96,6 @@ export function LoginPage() {
               Sign in
             </Button>
           </form>
-
-          {env.useDemoAuth && (
-            <p className="mt-6 text-center text-xs text-[#9CA3AF]">
-              Demo: {env.demoEmail} / {env.demoPassword}
-            </p>
-          )}
         </div>
       </div>
 

@@ -4,14 +4,13 @@ import { FiUsers, FiFileText, FiMail, FiUpload, FiZap } from 'react-icons/fi'
 import { StatCard } from '../components/StatCard'
 import { Button } from '../components/Button'
 import { useAuth } from '../context/AuthContext'
-import { fetchEmployees, generateSlips, sendSlipEmails } from '../api/payrollApi'
 import {
-  addActivity,
-  getActivities,
-  getStoredStats,
-  updateStoredStats,
-} from '../utils/activityLog'
-import type { ActivityItem } from '../types/employee'
+  fetchActivities,
+  fetchDashboardStats,
+  generateSlips,
+  sendSlipEmails,
+} from '../api/payrollApi'
+import type { ActivityItem, DashboardStats } from '../types/employee'
 
 function formatTime(iso: string) {
   return new Date(iso).toLocaleString(undefined, {
@@ -30,39 +29,50 @@ const activityIcon: Record<ActivityItem['type'], string> = {
 
 export function DashboardPage() {
   const { adminName } = useAuth()
-  const [employeeCount, setEmployeeCount] = useState(0)
-  const [stats, setStats] = useState(getStoredStats)
-  const [activities, setActivities] = useState<ActivityItem[]>(getActivities)
+  const [stats, setStats] = useState<DashboardStats>({
+    totalEmployees: 0,
+    slipsGenerated: 0,
+    emailsSent: 0,
+  })
+  const [activities, setActivities] = useState<ActivityItem[]>([])
   const [actionLoading, setActionLoading] = useState<string | null>(null)
   const [actionMessage, setActionMessage] = useState('')
 
-  const load = async () => {
-    try {
-      const employees = await fetchEmployees()
-      setEmployeeCount(employees.length)
-    } catch {
-      setEmployeeCount(0)
-    }
-  }
-
   useEffect(() => {
-    load()
+    let active = true
+
+    Promise.all([fetchDashboardStats(), fetchActivities()])
+      .then(([statsData, activityData]) => {
+        if (!active) return
+        setStats(statsData)
+        setActivities(activityData)
+      })
+      .catch(() => {
+        if (!active) return
+        setActionMessage('Could not load dashboard data. Check backend connection.')
+      })
+
+    return () => {
+      active = false
+    }
   }, [])
 
-  const refreshActivity = () => setActivities(getActivities())
+  const loadDashboard = async () => {
+    const [statsData, activityData] = await Promise.all([
+      fetchDashboardStats(),
+      fetchActivities(),
+    ])
+    setStats(statsData)
+    setActivities(activityData)
+  }
 
   const handleGenerate = async () => {
     setActionLoading('generate')
     setActionMessage('')
     try {
       const res = await generateSlips()
-      const stored = getStoredStats()
-      const next = stored.slipsGenerated + employeeCount
-      updateStoredStats({ slipsGenerated: next })
-      setStats(getStoredStats())
-      addActivity('generate', 'PDFs Generated', res.message)
-      refreshActivity()
-      setActionMessage('Salary slips generated successfully.')
+      await loadDashboard()
+      setActionMessage(res.message)
     } catch {
       setActionMessage('Could not generate slips. Upload employees first.')
     } finally {
@@ -75,18 +85,10 @@ export function DashboardPage() {
     setActionMessage('')
     try {
       const res = await sendSlipEmails()
-      const stored = getStoredStats()
-      updateStoredStats({
-        emailsSent: stored.emailsSent + res.emailSend,
-      })
-      setStats(getStoredStats())
-      addActivity(
-        'email',
-        'Emails Sent',
-        `${res.emailSend} sent, ${res.emailFailed} failed`,
+      await loadDashboard()
+      setActionMessage(
+        `Sent ${res.emailSend} email(s) successfully. ${res.emailFailed} failed.`,
       )
-      refreshActivity()
-      setActionMessage(`Sent ${res.emailSend} email(s) successfully.`)
     } catch {
       setActionMessage('Could not send emails. Generate PDFs first.')
     } finally {
@@ -106,7 +108,7 @@ export function DashboardPage() {
       <div className="mb-10 grid gap-5 sm:grid-cols-3">
         <StatCard
           label="Total Employees"
-          value={employeeCount}
+          value={stats.totalEmployees}
           icon={<FiUsers className="h-5 w-5" />}
         />
         <StatCard

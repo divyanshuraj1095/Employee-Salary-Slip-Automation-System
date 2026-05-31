@@ -10,14 +10,14 @@ const authUser = async (req: any, res: any, next: any) => {
 
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET as string
+      process.env.JWT_SECRET as string,
     ) as JwtPayload;
 
     req.user = decoded;
-
     next();
-  } catch (err: any) {
-    res.status(401).send("ERROR: " + err.message);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Unauthorized";
+    res.status(401).json({ message });
   }
 };
 

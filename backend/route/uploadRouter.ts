@@ -2,6 +2,7 @@ import express from "express"
 import upload from "../middlewares/multer.middleware";
 import parseExcel from "../utils/parseExcel";
 import Employee from "../models/employee";
+import { logActivity } from "../utils/logActivity";
 
 const uploadRouter = express.Router();
 
@@ -13,6 +14,12 @@ uploadRouter.post("/upload", upload.single("file"),async(req, res)=>{
         const data = parseExcel(req.file.path);
         console.log(data);
         await Employee.insertMany(data);
+        await logActivity(
+            "upload",
+            "File Uploaded",
+            `${req.file.originalname} — ${data.length} records`,
+            { count: data.length, fileName: req.file.originalname },
+        );
         res.json({
             message   : "File Uploaded and Parsed Successfully!!",
             employees : data

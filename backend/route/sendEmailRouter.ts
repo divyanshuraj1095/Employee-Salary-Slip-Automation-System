@@ -1,7 +1,9 @@
 import express from "express";
+import fs from "fs";
+import path from "path";
 import { sendEmail } from "../utils/sendEmail";
 import Employee from "../models/employee";
-import fs from "fs";
+import { logActivity } from "../utils/logActivity";
 
 const sendEmailRouter = express.Router();
 
@@ -15,7 +17,10 @@ sendEmailRouter.post("/sendEmail", async(req, res)=>{
         }
         for(const employee of employees){
             try{
-               const pdfPath : any = `pdfs/${employee.employeeId}-${employee.month}-${employee.year}.pdf`;
+               const pdfPath = path.join(
+                 "pdfs",
+                 `${employee.employeeId}-${employee.month}-${employee.year}.pdf`,
+               );
             //    console.log(pdfPath)
                if (!fs.existsSync(pdfPath)) {
                 console.log(`PDF not found for ${employee.employeeId}`);
@@ -31,6 +36,13 @@ sendEmailRouter.post("/sendEmail", async(req, res)=>{
                console.log(err);  
             }
         }
+
+        await logActivity(
+            "email",
+            "Emails Sent",
+            `${successCount} sent, ${failureCount} failed`,
+            { sent: successCount, failed: failureCount },
+        );
 
         res.json({
             message : "Email send successfully",

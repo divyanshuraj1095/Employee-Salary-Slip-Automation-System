@@ -4,7 +4,6 @@ import { PageHeader } from '../components/PageHeader'
 import { Button } from '../components/Button'
 import { fetchEmployees, generateSlips } from '../api/payrollApi'
 import { pdfUrl } from '../api/client'
-import { addActivity, updateStoredStats, getStoredStats } from '../utils/activityLog'
 import type { Employee } from '../types/employee'
 
 export function SalarySlipsPage() {
@@ -22,7 +21,22 @@ export function SalarySlipsPage() {
   }
 
   useEffect(() => {
-    load()
+    let active = true
+
+    fetchEmployees()
+      .then((data) => {
+        if (active) setEmployees(data)
+      })
+      .catch(() => {
+        if (active) setMessage('Could not load employees.')
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+
+    return () => {
+      active = false
+    }
   }, [])
 
   const handleGenerate = async () => {
@@ -30,11 +44,6 @@ export function SalarySlipsPage() {
     setMessage('')
     try {
       const res = await generateSlips()
-      const stored = getStoredStats()
-      updateStoredStats({
-        slipsGenerated: stored.slipsGenerated + employees.length,
-      })
-      addActivity('generate', 'PDFs Generated', res.message)
       setMessage(res.message)
       load()
     } catch {

@@ -1,6 +1,7 @@
 import express from "express";
 import generatePDF from "../utils/generatePDF";
 import Employee from "../models/employee";
+import { logActivity } from "../utils/logActivity";
 
 const generateRouter = express.Router();
 
@@ -14,6 +15,13 @@ generateRouter.post("/generate", async(req, res)=>{
         for(const employee of employees){
             await generatePDF(employee);
         }
+
+        await logActivity(
+            "generate",
+            "PDFs Generated",
+            `Generated ${employees.length} salary slip PDF(s)`,
+            { count: employees.length },
+        );
 
         res.json({
             message : "PDF Generated Successfully"
