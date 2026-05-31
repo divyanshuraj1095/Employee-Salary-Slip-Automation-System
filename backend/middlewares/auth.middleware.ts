@@ -1,30 +1,24 @@
-import Admin from "../models/admin";
-import jwt from "jsonwebtoken";
-import  { JwtPayload } from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
-const authUser = async (req, res, next) =>{
-    try{
-       const {token} = req.cookies;
-       if(!token){
-        throw new Error("Invalid tokennnn!!");
-       }
-       const decoded = jwt.verify(
-       token,
-       process.env.JWT_SECRET as string
-       ) as JwtPayload;
+const authUser = async (req: any, res: any, next: any) => {
+  try {
+    const { token } = req.cookies;
 
-       const {_id} = decoded;
-       const user = await Admin.findById(_id);
-       if(!user){
-        throw new Error("User doesnt exist");
-       }
-       req.user = user;
-       next();
-
+    if (!token) {
+      throw new Error("Invalid token");
     }
-    catch(err:any){
-        res.status(400).send("ERROR: "+err.message);
-    }
+
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string
+    ) as JwtPayload;
+
+    req.user = decoded;
+
+    next();
+  } catch (err: any) {
+    res.status(401).send("ERROR: " + err.message);
+  }
 };
 
 export default authUser;
