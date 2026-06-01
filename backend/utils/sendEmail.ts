@@ -6,7 +6,10 @@ const transporter = nodemailer.createTransport({
     auth : {
         user : process.env.EMAIL,
         pass : process.env.EMAIL_PASSWORD   
-    }
+    },
+    port: 587,
+    secure: false,
+    requireTLS: true,
 });
 
 export const sendEmail = async(email : string, pdfPath : string)=>{
