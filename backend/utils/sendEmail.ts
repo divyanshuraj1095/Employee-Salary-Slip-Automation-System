@@ -3,14 +3,14 @@ import nodemailer from "nodemailer";
 export const sendEmail = async (email: string, pdfPath: string) => {
 
     const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false,
-        requireTLS: true,
+        service: "gmail",
         auth: {
             user: process.env.EMAIL,
             pass: process.env.EMAIL_PASSWORD,
         },
+        port: 587,
+        secure: false,
+        requireTLS: true,
         connectionTimeout: 15000,
         greetingTimeout: 15000,
         socketTimeout: 15000,
